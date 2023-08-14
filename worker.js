@@ -45,8 +45,8 @@ const caches = {
   //lru_cache: n => new LRUCache(n),
   lru: await import("lru").then((m) => m.default),
   mkc: (max) => new MKC({ max }),
-  "mnemonist-object": (n) => new MnemonistLRUCache(n),
-  "mnemonist-map": (n) => new MnemonistLRUMap(n),
+  "mnemonist/lru-cache.js": (n) => new MnemonistLRUCache(n),
+  "mnemonist/lru-map.js": (n) => new MnemonistLRUMap(n),
 };
 const num = 2e5;
 const evict = num * 2;

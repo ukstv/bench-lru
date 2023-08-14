@@ -17,8 +17,8 @@ const meta = {
   "secondary-cache": { url: "https://npmjs.com/package/secondary-cache" },
   "simple-lru-cache": { url: "https://npmjs.com/package/simple-lru-cache" },
   "tiny-lru": { url: "https://npmjs.com/package/tiny-lru" },
-  "mnemonist-object": { url: "https://www.npmjs.com/package/mnemonist" },
-  "mnemonist-map": { url: "https://www.npmjs.com/package/mnemonist" },
+  "mnemonist/lru-cache.js": { url: "https://www.npmjs.com/package/mnemonist" },
+  "mnemonist/lru-map.js": { url: "https://www.npmjs.com/package/mnemonist" },
 };
 const caches = Object.keys(meta);
 const nth = caches.length;
