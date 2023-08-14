@@ -16,7 +16,7 @@ const Fast = lruFast.LRUCache;
 import QuickLRU from "quick-lru";
 import Modern from "modern-lru";
 import hyperlru from "hyperlru";
-import { LRUMap } from "lru_map";
+import lru_map from "lru_map";
 import MKC from "mkc";
 
 import MnemonistLRUCache from "mnemonist/lru-cache.js";
@@ -30,7 +30,7 @@ const hyperlruMap = hyperlru(hyperlryMapImport);
 const caches = {
   "lru-cache": (n) => new LRUCacheHyphen(n),
   "lru-fast": (n) => new Fast(n),
-  "js-lru": (n) => new LRUMap(n),
+  "lru_map": (n) => new lru_map.LRUMap(n),
   "modern-lru": (n) => new Modern(n),
   "quick-lru": (maxSize) => new QuickLRU({ maxSize }),
   "secondary-cache": await import("secondary-cache").then((m) => m.default),

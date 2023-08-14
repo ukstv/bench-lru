@@ -5,7 +5,7 @@ const meta = {
     hashlru: { url: "https://npmjs.com/package/hashlru" },
     "hyperlru-map": { url: "https://npmjs.com/package/hyperlru-map" },
     "hyperlru-object": { url: "https://npmjs.com/package/hyperlru-object" },
-    "js-lru": { url: "https://www.npmjs.com/package/js-lru" },
+    "lru_map": { url: "https://www.npmjs.com/package/lru_map" },
     lru: { url: "https://www.npmjs.com/package/lru" },
     "lru-cache": { url: "https://npmjs.com/package/lru-cache" },
     "lru-fast": { url: "https://npmjs.com/package/lru-fast" },
