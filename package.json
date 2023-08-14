@@ -44,8 +44,7 @@
     "simple-lru-cache": "^0.0.2",
     "standard-markdown": "^4.0.2",
     "tiny-lru": "^5.0.0",
-    "tiny-lru-cache": "^1.0.1",
-    "tiny-worker": "^2.1.2"
+    "tiny-lru-cache": "^1.0.1"
   },
   "scripts": {
     "start": "NODE_ENV=production node index.js",

@@ -1,66 +1,78 @@
-'use strict';
+import { parentPort } from "node:worker_threads";
 
-const precise = require('precise'),
-  retsu = require('retsu'),
-  LRUCacheHyphen = require('lru-cache'),
-  LRUCache = require('lru_cache').LRUCache,
-  Simple = require('simple-lru-cache'),
-  Fast = require('lru-fast').LRUCache,
-  QuickLRU = require('quick-lru'),
-  Modern = require('modern-lru'),
-  hyperlru = require('hyperlru'),
-  {LRUMap} = require('lru_map'),
-  MKC = require('mkc'),
-  hyperlruObject = hyperlru(require('hyperlru-object')),
-  hyperlruMap = hyperlru(require('hyperlru-map')),
-  MnemonistLRUCache = require('mnemonist/lru-cache'),
-  MnemonistLRUMap = require('mnemonist/lru-map'),
-  caches = {
-    'lru-cache': n => new LRUCacheHyphen(n),
-    'lru-fast': n => new Fast(n),
-    'js-lru': n => new LRUMap(n),
-    'modern-lru': n => new Modern(n),
-    'quick-lru': maxSize => new QuickLRU({maxSize}),
-    'secondary-cache': require('secondary-cache'),
-    'simple-lru-cache': maxSize => new Simple({maxSize}),
-    'tiny-lru': require('tiny-lru'),
-    hashlru: require('hashlru'),
-    'hyperlru-object': max => hyperlruObject({max}),
-    'hyperlru-map': max => hyperlruMap({max}),
-    //lru_cache: n => new LRUCache(n),
-    lru: require('lru'),
-    mkc: max => new MKC({max}),
-    'mnemonist-object': n => new MnemonistLRUCache(n),
-    'mnemonist-map': n => new MnemonistLRUMap(n)
-  },
-  num = 2e5,
-  evict = num * 2,
-  times = 5,
-  x = 1e6,
-  data1 = new Array(evict),
-  data2 = new Array(evict);
+import precise from "precise";
+import retsu from "retsu";
+import LRUCacheHyphen from "lru-cache";
 
-(function seed () {
+// import { LRUCache } from "lru_cache";
+// import lruCache from "lru_cache";
+// const LRUCache = lruCache.LRUCache;
+
+import Simple from "simple-lru-cache";
+// import { LRUCache as Fast } from "lru-fast";
+import lruFast from "lru-fast";
+const Fast = lruFast.LRUCache;
+
+import QuickLRU from "quick-lru";
+import Modern from "modern-lru";
+import hyperlru from "hyperlru";
+import { LRUMap } from "lru_map";
+import MKC from "mkc";
+
+import MnemonistLRUCache from "mnemonist/lru-cache.js";
+import MnemonistLRUMap from "mnemonist/lru-map.js";
+
+import hyperlruObjectImport from "hyperlru-object";
+const hyperlruObject = hyperlru(hyperlruObjectImport);
+import hyperlryMapImport from "hyperlru-map";
+const hyperlruMap = hyperlru(hyperlryMapImport);
+
+const caches = {
+  "lru-cache": (n) => new LRUCacheHyphen(n),
+  "lru-fast": (n) => new Fast(n),
+  "js-lru": (n) => new LRUMap(n),
+  "modern-lru": (n) => new Modern(n),
+  "quick-lru": (maxSize) => new QuickLRU({ maxSize }),
+  "secondary-cache": await import("secondary-cache").then((m) => m.default),
+  "simple-lru-cache": (maxSize) => new Simple({ maxSize }),
+  "tiny-lru": await import("tiny-lru").then((m) => m.default),
+  hashlru: await import("hashlru").then((m) => m.default),
+  "hyperlru-object": (max) => hyperlruObject({ max }),
+  "hyperlru-map": (max) => hyperlruMap({ max }),
+  //lru_cache: n => new LRUCache(n),
+  lru: await import("lru").then((m) => m.default),
+  mkc: (max) => new MKC({ max }),
+  "mnemonist-object": (n) => new MnemonistLRUCache(n),
+  "mnemonist-map": (n) => new MnemonistLRUMap(n),
+};
+const num = 2e5;
+const evict = num * 2;
+const times = 5;
+const x = 1e6;
+const data1 = new Array(evict);
+const data2 = new Array(evict);
+
+(function seed() {
   let z = -1;
 
   while (++z < evict) {
     data1[z] = [z, Math.floor(Math.random() * 1e7)];
     data2[z] = [z, Math.floor(Math.random() * 1e7)];
   }
-}());
+})();
 
-self.onmessage = function (ev) {
-  const id = ev.data,
+parentPort.on("message", (ev) => {
+  const id = ev,
     time = {
-      'set': [],
+      set: [],
       get1: [],
       update: [],
       get2: [],
-      evict: []
+      evict: [],
     },
     results = {
       name: id,
-      'set': 0,
+      set: 0,
       get1: 0,
       update: 0,
       get2: 0,
@@ -70,7 +82,9 @@ self.onmessage = function (ev) {
   let n = -1;
 
   while (++n < times) {
-    const lru = caches[id](num)
+    console.log("id.0", id);
+    const lru = caches[id](num);
+    console.log("id.1", id);
     const stimer = precise().start();
     for (let i = 0; i < num; i++) lru.set(data1[i][0], data1[i][1]);
     time.set.push(stimer.stop().diff() / x);
@@ -92,9 +106,9 @@ self.onmessage = function (ev) {
     time.evict.push(etimer.stop().diff() / x);
   }
 
-  ['set', 'get1', 'update', 'get2', 'evict'].forEach(i => {
+  ["set", "get1", "update", "get2", "evict"].forEach((i) => {
     results[i] = Number((num / retsu.median(time[i]).toFixed(2)).toFixed(0));
   });
 
-  postMessage(JSON.stringify(results));
-};
+  parentPort.postMessage(JSON.stringify(results));
+});

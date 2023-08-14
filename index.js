@@ -1,5 +1,6 @@
 "use strict";
-import Worker from "tiny-worker";
+// import Worker from "tiny-worker";
+import { Worker } from "node:worker_threads";
 import ora from "ora";
 
 const meta = {
@@ -33,10 +34,19 @@ caches.forEach((i, idx) => {
         .then(() => {
           const worker = new Worker("./worker.js");
 
-          worker.onmessage = (ev) => {
-            resolve(ev.data);
+          worker.on("message", (ev) => {
+            resolve(ev);
             worker.terminate();
-          };
+          });
+          // worker.onmessage = (ev) => {
+          //   resolve(ev.data);
+          //   worker.terminate();
+          // };
+
+          worker.on("error", (err) => {
+            reject(err);
+            worker.terminate();
+          });
 
           worker.onerror = (err) => {
             reject(err);
@@ -69,7 +79,7 @@ try {
         .join("\n"),
     ),
   );
-} catch (e) {
+} catch (err) {
   console.error(err.stack || err.message || err);
   process.exit(1);
 }
