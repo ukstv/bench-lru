@@ -3,10 +3,8 @@ import { parentPort } from "node:worker_threads";
 import { precise } from "precise";
 import retsu from "retsu";
 
-
-import LRUCacheHyphen from "lru-cache";
-import JsLru from 'js-lru'
-
+import { LRUCache as LRUCacheHyphen } from "lru-cache";
+import JsLru from "js-lru";
 
 // import { LRUCache } from "lru_cache";
 // import lruCache from "lru_cache";
@@ -32,15 +30,15 @@ import hyperlryMapImport from "hyperlru-map";
 const hyperlruMap = hyperlru(hyperlryMapImport);
 
 const caches = {
-  "lru-cache": (n) => new LRUCacheHyphen(n),
+  "lru-cache": (n) => new LRUCacheHyphen({ max: n }),
   "lru-fast": (n) => new Fast(n),
-  "lru_map": (n) => new lru_map.LRUMap(n),
+  lru_map: (n) => new lru_map.LRUMap(n),
   "js-lru": (n) => new JsLru.LRUCache(n),
   "modern-lru": (n) => new Modern(n),
   "quick-lru": (maxSize) => new QuickLRU({ maxSize }),
   "secondary-cache": await import("secondary-cache").then((m) => m.default),
   "simple-lru-cache": (maxSize) => new Simple({ maxSize }),
-  "tiny-lru": await import("tiny-lru").then(m => m.lru),
+  "tiny-lru": await import("tiny-lru").then((m) => m.lru),
   hashlru: await import("hashlru").then((m) => m.default),
   "hyperlru-object": (max) => hyperlruObject({ max }),
   "hyperlru-map": (max) => hyperlruMap({ max }),
