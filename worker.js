@@ -1,6 +1,6 @@
 import { parentPort } from "node:worker_threads";
 
-import precise from "precise";
+import { precise } from "precise";
 import retsu from "retsu";
 import LRUCacheHyphen from "lru-cache";
 

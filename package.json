@@ -35,7 +35,7 @@
     "mnemonist": "^0.25.0",
     "modern-lru": "^1.2.0",
     "ora": "^2.0.0",
-    "precise": "^1.1.0",
+    "precise": "^2.0.1",
     "quick-lru": "^1.1.0",
     "retsu": "^3.0.1",
     "secondary-cache": "^1.2.1",
