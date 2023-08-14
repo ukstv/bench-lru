@@ -37,7 +37,7 @@
     "modern-lru": "^1.4.0",
     "ora": "^7.0.1",
     "precise": "^2.0.1",
-    "quick-lru": "^1.1.0",
+    "quick-lru": "^6.1.1",
     "retsu": "^3.0.1",
     "secondary-cache": "^1.2.1",
     "should": "^13.2.1",
