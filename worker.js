@@ -2,7 +2,11 @@ import { parentPort } from "node:worker_threads";
 
 import { precise } from "precise";
 import retsu from "retsu";
+
+
 import LRUCacheHyphen from "lru-cache";
+import JsLru from 'js-lru'
+
 
 // import { LRUCache } from "lru_cache";
 // import lruCache from "lru_cache";
@@ -31,6 +35,7 @@ const caches = {
   "lru-cache": (n) => new LRUCacheHyphen(n),
   "lru-fast": (n) => new Fast(n),
   "lru_map": (n) => new lru_map.LRUMap(n),
+  "js-lru": (n) => new JsLru.LRUCache(n),
   "modern-lru": (n) => new Modern(n),
   "quick-lru": (maxSize) => new QuickLRU({ maxSize }),
   "secondary-cache": await import("secondary-cache").then((m) => m.default),
