@@ -52,9 +52,9 @@ const caches = {
   "@ekwoka/weak-lru-cache": (n) => WeakLRUCache({ size: n }),
   "most-recent": (n) => new MostRecent(n),
 };
-const NUM = 200_000;
+const NUM = 10_000;
 const EVICT = NUM * 2;
-const TIMES = 20;
+const TIMES = 500;
 const X = 1_000_000;
 
 const data1 = new Array(EVICT).fill(0).map((_, index) => {
