@@ -82,9 +82,7 @@ parentPort.on("message", (ev) => {
   let n = -1;
 
   while (++n < times) {
-    console.log("id.0", id);
     const lru = caches[id](num);
-    console.log("id.1", id);
     const stimer = precise().start();
     for (let i = 0; i < num; i++) lru.set(data1[i][0], data1[i][1]);
     time.set.push(stimer.stop().diff() / x);

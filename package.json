@@ -23,7 +23,7 @@
     "hyperlru": "^2.1.2",
     "hyperlru-map": "^1.0.0",
     "hyperlru-object": "^1.0.0",
-    "keysort": "^1.0.2",
+    "keysort": "^2.0.1",
     "lodash": "^4.17.5",
     "lru": "^3.1.0",
     "lru_cache": "^1.0.2",

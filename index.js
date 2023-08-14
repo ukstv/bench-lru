@@ -64,7 +64,7 @@ caches.forEach((i, idx) => {
 try {
   const results = await Promise.all(promises);
   const { default: toMD } = await import("markdown-tables");
-  const { default: keysort } = await import("keysort");
+  const { keysort } = await import("keysort");
 
   spinner.stop();
   console.log(
