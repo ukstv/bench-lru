@@ -23,6 +23,7 @@ import MKC from "mkc";
 
 import MnemonistLRUCache from "mnemonist/lru-cache.js";
 import MnemonistLRUMap from "mnemonist/lru-map.js";
+import { WeakLRUCache } from "@ekwoka/weak-lru-cache";
 
 import hyperlruObjectImport from "hyperlru-object";
 const hyperlruObject = hyperlru(hyperlruObjectImport);
@@ -47,6 +48,7 @@ const caches = {
   mkc: (max) => new MKC({ max }),
   "mnemonist/lru-cache.js": (n) => new MnemonistLRUCache(n),
   "mnemonist/lru-map.js": (n) => new MnemonistLRUMap(n),
+  "@ekwoka/weak-lru-cache": (n) => WeakLRUCache({ size: n }),
 };
 const num = 2e5;
 const evict = num * 2;
@@ -59,8 +61,8 @@ const data2 = new Array(evict);
   let z = -1;
 
   while (++z < evict) {
-    data1[z] = [z, Math.floor(Math.random() * 1e7)];
-    data2[z] = [z, Math.floor(Math.random() * 1e7)];
+    data1[z] = [z, { hello: Math.floor(Math.random() * 1e7) }];
+    data2[z] = [z, { world: Math.floor(Math.random() * 1e7) }];
   }
 })();
 
@@ -72,6 +74,7 @@ parentPort.on("message", (ev) => {
       update: [],
       get2: [],
       evict: [],
+      evict2: [],
     },
     results = {
       name: id,
@@ -80,6 +83,7 @@ parentPort.on("message", (ev) => {
       update: 0,
       get2: 0,
       evict: 0,
+      evict2: 0,
     };
 
   let n = -1;
@@ -105,9 +109,13 @@ parentPort.on("message", (ev) => {
     const etimer = precise().start();
     for (let i = num; i < evict; i++) lru.set(data1[i][0], data1[i][1]);
     time.evict.push(etimer.stop().diff() / x);
+
+    const e2timer = precise().start();
+    for (let i = num; i < evict; i++) lru.set(data2[i][0], data2[i][1]);
+    time.evict2.push(e2timer.stop().diff() / x);
   }
 
-  ["set", "get1", "update", "get2", "evict"].forEach((i) => {
+  ["set", "get1", "update", "get2", "evict", "evict2"].forEach((i) => {
     results[i] = Number((num / retsu.median(time[i]).toFixed(2)).toFixed(0));
   });
 

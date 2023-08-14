@@ -18,6 +18,7 @@
     "url": "https://github.com/dominictarr/bench-lru/issues"
   },
   "dependencies": {
+    "@ekwoka/weak-lru-cache": "^0.1.1",
     "faster-lru-cache": "^2.0.0",
     "hashlru": "^2.2.1",
     "hyperlru": "^2.1.2",

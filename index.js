@@ -19,6 +19,7 @@ const meta = {
   "tiny-lru": { url: "https://npmjs.com/package/tiny-lru" },
   "mnemonist/lru-cache.js": { url: "https://www.npmjs.com/package/mnemonist" },
   "mnemonist/lru-map.js": { url: "https://www.npmjs.com/package/mnemonist" },
+  "@ekwoka/weak-lru-cache": { url: "https://www.npmjs.com/package/@ekwoka/weak-lru-cache" },
 };
 const caches = Object.keys(meta);
 const nth = caches.length;
@@ -72,16 +73,16 @@ try {
   spinner.stop();
   console.log(
     toMD(
-      ["name,set,get1,update,get2,evict"]
+      ["name,set,get1,update,get2,evict,evict2"]
         .concat(
           keysort(
             results.map((i) => JSON.parse(i)),
-            "evict desc, set desc, get1 desc, update desc, get2 desc",
+            "evict2 desc, evict desc, set desc, get1 desc, update desc, get2 desc",
           ).map(
             (i) =>
               `[${i.name}](${meta[i.name].url}),${pad(i.set)},${pad(i.get1)},${pad(i.update)},${pad(i.get2)},${pad(
                 i.evict,
-              )}`,
+              )},${pad(i.evict2)}`,
           ),
         )
         .join("\n"),
