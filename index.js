@@ -65,6 +65,10 @@ try {
   const { default: toMD } = await import("markdown-tables");
   const { keysort } = await import("keysort");
 
+  const pad = (input) => {
+    return String(input).padStart(7);
+  };
+
   spinner.stop();
   console.log(
     toMD(
@@ -73,7 +77,12 @@ try {
           keysort(
             results.map((i) => JSON.parse(i)),
             "evict desc, set desc, get1 desc, update desc, get2 desc",
-          ).map((i) => `[${i.name}](${meta[i.name].url}),${i.set},${i.get1},${i.update},${i.get2},${i.evict}`),
+          ).map(
+            (i) =>
+              `[${i.name}](${meta[i.name].url}),${pad(i.set)},${pad(i.get1)},${pad(i.update)},${pad(i.get2)},${pad(
+                i.evict,
+              )}`,
+          ),
         )
         .join("\n"),
     ),
