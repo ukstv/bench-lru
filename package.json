@@ -39,7 +39,7 @@
     "precise": "^2.0.1",
     "quick-lru": "^6.1.1",
     "retsu": "^3.0.1",
-    "secondary-cache": "^1.2.1",
+    "secondary-cache": "^1.2.5",
     "should": "^13.2.1",
     "simple-lru-cache": "^0.0.2",
     "standard-markdown": "^4.0.2",
