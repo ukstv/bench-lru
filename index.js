@@ -1,5 +1,3 @@
-"use strict";
-// import Worker from "tiny-worker";
 import { Worker } from "node:worker_threads";
 import ora from "ora";
 
