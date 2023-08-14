@@ -52,21 +52,17 @@ const caches = {
   "@ekwoka/weak-lru-cache": (n) => WeakLRUCache({ size: n }),
   "most-recent": (n) => new MostRecent(n),
 };
-const num = 2e5;
-const evict = num * 2;
-const times = 5;
-const x = 1e6;
-const data1 = new Array(evict);
-const data2 = new Array(evict);
+const NUM = 200_000;
+const EVICT = NUM * 2;
+const TIMES = 5;
+const X = 1_000_000;
 
-(function seed() {
-  let z = -1;
-
-  while (++z < evict) {
-    data1[z] = [z, { hello: Math.floor(Math.random() * 1e7) }];
-    data2[z] = [z, { world: Math.floor(Math.random() * 1e7) }];
-  }
-})();
+const data1 = new Array(EVICT).fill(0).map((_, index) => {
+  return [index, { hello: Math.floor(Math.random() * 1e7) }];
+});
+const data2 = new Array(EVICT).fill(0).map((_, index) => {
+  return [index, { world: Math.floor(Math.random() * 1e7) }];
+});
 
 parentPort.on("message", (ev) => {
   const id = ev,
@@ -90,35 +86,35 @@ parentPort.on("message", (ev) => {
 
   let n = -1;
 
-  while (++n < times) {
-    const lru = caches[id](num);
+  while (++n < TIMES) {
+    const lru = caches[id](NUM);
     const stimer = precise().start();
-    for (let i = 0; i < num; i++) lru.set(data1[i][0], data1[i][1]);
-    time.set.push(stimer.stop().diff() / x);
+    for (let i = 0; i < NUM; i++) lru.set(data1[i][0], data1[i][1]);
+    time.set.push(stimer.stop().diff() / X);
 
     const gtimer = precise().start();
-    for (let i = 0; i < num; i++) lru.get(data1[i][0]);
-    time.get1.push(gtimer.stop().diff() / x);
+    for (let i = 0; i < NUM; i++) lru.get(data1[i][0]);
+    time.get1.push(gtimer.stop().diff() / X);
 
     const utimer = precise().start();
-    for (let i = 0; i < num; i++) lru.set(data1[i][0], data2[i][1]);
-    time.update.push(utimer.stop().diff() / x);
+    for (let i = 0; i < NUM; i++) lru.set(data1[i][0], data2[i][1]);
+    time.update.push(utimer.stop().diff() / X);
 
     const g2timer = precise().start();
-    for (let i = 0; i < num; i++) lru.get(data1[i][0]);
-    time.get2.push(g2timer.stop().diff() / x);
+    for (let i = 0; i < NUM; i++) lru.get(data1[i][0]);
+    time.get2.push(g2timer.stop().diff() / X);
 
     const etimer = precise().start();
-    for (let i = num; i < evict; i++) lru.set(data1[i][0], data1[i][1]);
-    time.evict.push(etimer.stop().diff() / x);
+    for (let i = NUM; i < EVICT; i++) lru.set(data1[i][0], data1[i][1]);
+    time.evict.push(etimer.stop().diff() / X);
 
     const e2timer = precise().start();
-    for (let i = num; i < evict; i++) lru.set(data2[i][0], data2[i][1]);
-    time.evict2.push(e2timer.stop().diff() / x);
+    for (let i = NUM; i < EVICT; i++) lru.set(data2[i][0], data2[i][1]);
+    time.evict2.push(e2timer.stop().diff() / X);
   }
 
   ["set", "get1", "update", "get2", "evict", "evict2"].forEach((i) => {
-    results[i] = Number((num / retsu.median(time[i]).toFixed(2)).toFixed(0));
+    results[i] = Number((NUM / retsu.median(time[i]).toFixed(2)).toFixed(0));
   });
 
   parentPort.postMessage(JSON.stringify(results));
