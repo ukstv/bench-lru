@@ -51,26 +51,25 @@ caches.forEach((i, idx) => {
   );
 });
 
-Promise.all(promises)
-  .then(async (results) => {
-    const { default: toMD } = await import("markdown-tables");
-    const { default: keysort } = await import("keysort");
+try {
+  const results = await Promise.all(promises);
+  const { default: toMD } = await import("markdown-tables");
+  const { default: keysort } = await import("keysort");
 
-    spinner.stop();
-    console.log(
-      toMD(
-        ["name,set,get1,update,get2,evict"]
-          .concat(
-            keysort(
-              results.map((i) => JSON.parse(i)),
-              "evict desc, set desc, get1 desc, update desc, get2 desc",
-            ).map((i) => `[${i.name}](${meta[i.name].url}),${i.set},${i.get1},${i.update},${i.get2},${i.evict}`),
-          )
-          .join("\n"),
-      ),
-    );
-  })
-  .catch((err) => {
-    console.error(err.stack || err.message || err);
-    process.exit(1);
-  });
+  spinner.stop();
+  console.log(
+    toMD(
+      ["name,set,get1,update,get2,evict"]
+        .concat(
+          keysort(
+            results.map((i) => JSON.parse(i)),
+            "evict desc, set desc, get1 desc, update desc, get2 desc",
+          ).map((i) => `[${i.name}](${meta[i.name].url}),${i.set},${i.get1},${i.update},${i.get2},${i.evict}`),
+        )
+        .join("\n"),
+    ),
+  );
+} catch (e) {
+  console.error(err.stack || err.message || err);
+  process.exit(1);
+}
