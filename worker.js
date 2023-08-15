@@ -20,7 +20,7 @@ import Modern from "modern-lru";
 import hyperlru from "hyperlru";
 import lru_map from "lru_map";
 import MKC from "mkc";
-import { LRUCache as MostRecent } from "most-recent";
+import { LRUCache as LeastRecent } from "least-recent";
 
 import MnemonistLRUCache from "mnemonist/lru-cache.js";
 import MnemonistLRUMap from "mnemonist/lru-map.js";
@@ -50,11 +50,11 @@ const caches = {
   "mnemonist/lru-cache.js": (n) => new MnemonistLRUCache(n),
   "mnemonist/lru-map.js": (n) => new MnemonistLRUMap(n),
   "@ekwoka/weak-lru-cache": (n) => WeakLRUCache({ size: n }),
-  "most-recent": (n) => new MostRecent(n),
+  "least-recent": (n) => new LeastRecent(n),
 };
-const NUM = 10_000;
+const NUM = 200_000;
 const EVICT = NUM * 2;
-const TIMES = 500;
+const TIMES = 5;
 const X = 1_000_000;
 
 const data1 = new Array(EVICT).fill(0).map((_, index) => {

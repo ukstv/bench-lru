@@ -20,7 +20,7 @@ const meta = {
   "mnemonist/lru-cache.js": { url: "https://www.npmjs.com/package/mnemonist" },
   "mnemonist/lru-map.js": { url: "https://www.npmjs.com/package/mnemonist" },
   "@ekwoka/weak-lru-cache": { url: "https://www.npmjs.com/package/@ekwoka/weak-lru-cache" },
-  "most-recent": { url: "private" },
+  "least-recent": { url: "https://www.npmjs.com/package/least-recent" },
 };
 const caches = Object.keys(meta);
 const nth = caches.length;

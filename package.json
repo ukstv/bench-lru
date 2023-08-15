@@ -18,7 +18,7 @@
     "url": "https://github.com/dominictarr/bench-lru/issues"
   },
   "dependencies": {
-    "most-recent": "file:///Users/ukstv/Codes/Ukstv/most-recent",
+    "least-recent": "^1.0.2",
     "@ekwoka/weak-lru-cache": "^0.1.1",
     "faster-lru-cache": "^2.0.0",
     "hashlru": "^2.2.1",
